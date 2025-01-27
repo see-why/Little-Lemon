@@ -17,7 +17,8 @@
               <input type="text" placeholder="Your Name" maxlength="200" required="" id="first_name">
             </p>
             <p>
-            <!-- Step 9: Part one -->
+              <label for="reservation_date">Name:</label>
+              <input type="date" placeholder="Your Date" maxlength="200" required="" id="reservation_date">
             </p>
       
             <p>
@@ -49,14 +50,15 @@
 <script>
 
   const date = new Date()
-  document.getElementById('reservation_date').value = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate().toString().padStart(2, "0")}`
+  const reservation_date = document.getElementById('reservation_date')
+  reservation_date.value = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate().toString().padStart(2, "0")}`
 
-  console.log(document.getElementById('reservation_date').value)
+  console.log(reservation_date.value)
   getBookings()
 
-
-  /*  Step 10: Part two */
-
+  reservation_date.addEventListener('change', function (e) {
+    getBookings()
+  })
 
   function getBookings() {
     let reserved_slots = []
@@ -67,14 +69,19 @@
       .then(r => r.json())
       .then(data => {
         reserved_slots = []
-        bookings = ''
+        let bookings = ''
         
-        /* Step 11: Part three */
+        for (let booking of data) {
+          reserved_slots.push(booking.fields.reservation_slot)
+          bookings += `<p>${booking.fields.first_name} - ${booking.fields.reservation_slot} </p>`
+        }
 
+        let slot_options = '<option value="0" disabled>Select time</option>'
+        for (let i = 9; i <= 21; i++) {
+          const label = formatTime(i)
+          slot_options += `<option value="${i}" ${reserved_slots.includes(label)?'disabled':''}>${label}</option>`
+        }
 
-        /* Step 12: Part four  */
-
-        
         document.getElementById('reservation_slot').innerHTML = slot_options
         if(bookings==''){
           bookings = "No bookings"
