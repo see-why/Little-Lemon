@@ -35,7 +35,7 @@
   const bookings = JSON.parse('{{ bookings|safe }}');
   console.log(bookings);
 
-  let tableHtml = '<table><tr><th>Name</th><th>Time slot</th><th>Booking Date</th></tr>';
+  let tableHtml = '<table class="bookings-table"><tr><th>Name</th><th>Time slot</th><th>Booking Date</th></tr>';
 
   bookings.forEach(booking => {
     tableHtml += `<tr>
