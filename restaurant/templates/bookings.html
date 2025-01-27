@@ -32,10 +32,24 @@
   </article>
 </section>
 <script>
-  const bookings = JSON.parse('{{ bookings|safe }}')
+  const bookings = JSON.parse('{{ bookings|safe }}');
   console.log(bookings);
-  const pretty_json = JSON.stringify(bookings,null,2)
-  document.getElementById('bookings').innerHTML = pretty_json
+
+  let tableHtml = '<table><tr><th>Name</th><th>Time slot</th><th>Booking Date</th></tr>';
+
+  bookings.forEach(booking => {
+    tableHtml += `<tr>
+      <td>${booking.fields.first_name}</td>\t
+      <td>${booking.fields.reservation_slot >= 12 ? booking.fields.reservation_slot - 12 + ' PM' : booking.fields.reservation_slot + ' AM'}</td>\t
+      <td>${booking.fields.reservation_date}</td>
+    </tr>`;
+  });
+
+
+  tableHtml += '</table>';
+
+  document.getElementById('bookings').innerHTML = tableHtml;
 </script>
+
 {% endblock %}
 
